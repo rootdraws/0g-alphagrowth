@@ -1,0 +1,132 @@
+import { SafeLink } from "@morpho-org/uikit/components/safe-link";
+import { type Deployments } from "@morpho-org/uikit/lib/deployments";
+import { zerog } from "@morpho-org/uikit/lib/chains/zerog";
+import { ReactNode } from "react";
+import { celo, type Chain, hemi, lisk, optimism, plumeMainnet, polygon, soneium, worldchain } from "wagmi/chains";
+
+/**
+ * App-wide deprecation banner configuration.
+ * Set to undefined to disable the banner.
+ */
+export const APP_DEPRECATION_BANNER: { color: string; text: ReactNode } | undefined = undefined;
+
+/**
+ * Chain-specific deprecation modal configuration.
+ * Only chains listed here will show the deprecation modal.
+ */
+export const CHAIN_DEPRECATION_INFO: Partial<
+  Record<keyof Deployments, { chain: Chain; cutoffDate: string; ecosystemBuilder: string; ecosystemBuilderUrl: string }>
+> = {
+  // [worldchain.id]: {
+  //   chain: worldchain,
+  //   cutoffDate: "February 14, 2026",
+  //   ecosystemBuilder: "Oku",
+  //   ecosystemBuilderUrl: "https://oku.trade/morpho/vaults?inputChain=worldchain",
+  // },
+  [soneium.id]: {
+    chain: soneium,
+    cutoffDate: "March 16, 2026",
+    ecosystemBuilder: "Feather",
+    ecosystemBuilderUrl: "https://app.feather.zone/portfolio",
+  },
+  [lisk.id]: {
+    chain: lisk,
+    cutoffDate: "March 16, 2026",
+    ecosystemBuilder: "Feather",
+    ecosystemBuilderUrl: "https://app.feather.zone/portfolio",
+  },
+  [celo.id]: {
+    chain: celo,
+    cutoffDate: "March 16, 2026",
+    ecosystemBuilder: "Feather",
+    ecosystemBuilderUrl: "https://app.feather.zone/portfolio",
+  },
+};
+
+export function isReduceOnly(chainId: number | undefined) {
+  return chainId !== undefined && (CHAIN_DEPRECATION_INFO[chainId] !== undefined || chainId === worldchain.id);
+}
+
+export const APP_DETAILS = {
+  // NOTE: Should always match the title in `index.html` (won't break anything, but should be correct)
+  name: import.meta.env.VITE_APP_TITLE,
+  description: "A minimal and open-source version of the main Morpho App",
+  url: "https://lite.morpho.org",
+  icon: "/favicon.svg",
+};
+
+export const WORDMARK = ""; // Replace with "/your-wordmark.svg" to customize interface
+
+export const MIN_TIMELOCK = 3 * 24 * 60 * 60; // For filtering vaults
+
+export const DEFAULT_CHAIN = zerog;
+
+export const TRANSACTION_DATA_SUFFIX = "0x117E"; // (L I T E)
+
+export const TERMS_OF_USE = "https://cdn.morpho.org/documents/Morpho_Terms_of_Use.pdf";
+export const RISKS_DOCUMENTATION = "https://docs.morpho.org/learn/resources/risks/";
+export const ADDRESSES_DOCUMENTATION = "https://docs.morpho.org/getting-started/resources/addresses/";
+export const SHARED_LIQUIDITY_DOCUMENTATION = "https://docs.morpho.org/build/borrow/concepts/public-allocator";
+
+export const BANNERS: Record<keyof Deployments, { color: string; text: ReactNode }> = {
+  [hemi.id]: {
+    color: "bg-[rgb(238,117,53)]",
+    text: (
+      <span className="grow py-2 text-center text-black">
+        Access additional features and explore incentives via the interface offered by{" "}
+        <SafeLink className="underline" href="https://morpho.solera.market/earn?chains=Hemi">
+          Solera
+        </SafeLink>
+        .
+      </span>
+    ),
+  },
+  [plumeMainnet.id]: {
+    color: "bg-[rgb(255,61,0)]",
+    text: (
+      <span className="grow py-2 text-center">
+        Access additional features and explore incentives via the interface offered by{" "}
+        <SafeLink className="underline" href="https://app.mysticfinance.xyz">
+          Mystic
+        </SafeLink>
+        .
+      </span>
+    ),
+  },
+  [polygon.id]: {
+    color: "bg-purple-500",
+    text: (
+      <span className="grow py-2 text-center">
+        Claim rewards and access enhanced features on the external{" "}
+        <SafeLink className="underline" href="https://compound.blue">
+          Compound Blue
+        </SafeLink>{" "}
+        interface.
+      </span>
+    ),
+  },
+  [optimism.id]: {
+    color: "bg-red-500",
+    text: (
+      <span className="grow py-2 text-center">
+        The most popular OP Mainnet markets are also accessible on{" "}
+        <SafeLink className="underline" href="https://moonwell.fi">
+          Moonwell
+        </SafeLink>
+        .
+      </span>
+    ),
+  },
+  [worldchain.id]: {
+    color: "bg-black",
+    text: (
+      <span className="grow py-2 text-center">
+        Claim rewards and access enhanced features on the external{" "}
+        <SafeLink className="underline" href="https://oku.trade/morpho/vaults?inputChain=worldchain">
+          Oku
+        </SafeLink>{" "}
+        interface.
+      </span>
+    ),
+  },
+};

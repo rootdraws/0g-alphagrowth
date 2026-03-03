@@ -1,0 +1,40 @@
+name: Deploy site via Fleek
+on:
+  push:
+    branches: ["release"]
+    paths: ["pnpm-lock.yaml", "fleek.config.ts", "packages/uikit/**", "apps/fallback/**"]
+jobs:
+  deploy-to-fleek:
+    # Create an environment for static hosting on IPFS
+    environment:
+      name: IPFS
+      url: ${{ steps.build-and-deploy.outputs.ipfs_cid }}
+
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [22]
+    env:
+      FLEEK_TOKEN: ${{ secrets.FLEEK_TOKEN }}
+      FLEEK_PROJECT_ID: ${{ secrets.FLEEK_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Fleek CLI
+        run: pnpm add -g @fleek-platform/cli
+      - name: Build & deploy sites
+        id: build-and-deploy
+        run: |
+          fleek sites deploy
+          echo "ipfs_cid=https://$(fleek sites deployments --slug morpho-fallback | tail -n +4 | head -n 1 | awk '{print $NF}').ipfs.dweb.link/" >> $GITHUB_OUTPUT
