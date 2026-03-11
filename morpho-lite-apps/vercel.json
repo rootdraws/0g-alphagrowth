@@ -1,0 +1,7 @@
+{
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm uikit:build && cd apps/lite && pnpm exec vite build",
+  "outputDirectory": "apps/lite/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+  "framework": "vite"
+}
