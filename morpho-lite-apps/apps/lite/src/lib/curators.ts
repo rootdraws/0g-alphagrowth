@@ -103,8 +103,8 @@ export const MANUALLY_WHITELISTED_CURATORS: FragmentOf<typeof CuratorFragment>[]
   {
     addresses: [{ address: "0x5304ebB378186b081B99dbb8B6D17d9005eA0448", chainId: zerog.id }],
     image: "/zerog.png",
-    name: "0G",
-    url: "https://0g.ai",
+    name: "AlphaGrowth",
+    url: "https://alphagrowth.markets",
   },
 ];
 
