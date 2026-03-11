@@ -128,7 +128,7 @@ export function BorrowSubPage() {
   const marketsArr = useMemo(() => {
     const marketsArr = Object.values(markets).filter(
       (market) =>
-        market.totalSupplyAssets > 0n &&
+        (isZerog || market.totalSupplyAssets > 0n) &&
         ![market.params.collateralToken, market.params.loanToken, market.params.irm, market.params.oracle].includes(
           zeroAddress,
         ),
@@ -139,7 +139,7 @@ export function BorrowSubPage() {
       return primary === 0 ? secondary : primary;
     });
     return marketsArr;
-  }, [markets]);
+  }, [isZerog, markets]);
   const marketVaults = useMemo(() => {
     const map = new Map<
       Hex,
